@@ -12,7 +12,7 @@ int solution(int k, vector<int> num, vector<vector<int>> links) {
     for(int i=0; i<n; i++){
         end += num[i];
         if(links[i][0] != -1){ parent[links[i][0]] = i; child[i]++; }
-        if(links[i][1] != -1){ parent[links[i][1]] = i; child[i]++; }
+        if(links[i][1] != -1){ parent[links[i][1]] = i; child[i]++; } // else if로 해서 ... 제대로 형성 X
     }
     
     int mid;
