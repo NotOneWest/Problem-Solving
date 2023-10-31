@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool board[11][11], temp[11][11];
+bool board[10][10], temp[10][10];
 int dx[4] = { 0,0,1,-1 };
 int dy[4] = { 1,-1,0,0 };
 
@@ -18,19 +18,19 @@ bool islight() {
 	return 0;
 }
 
-void turnOn(int x, int y){
+void turnOn(int y, int x){
 	for(int i=0; i<4; i++){
-		int nx = x+dx[i], ny = y+dy[i]; 
-		if(x<0 || x>9 || y<0 || y>9) continue;
-		temp[nx][ny] = !temp[nx][ny];
+		int ny = y+dy[i], nx = x+dx[i];
+		if(nx<0 || nx>9 || ny<0 || ny>9) continue; // nx, ny를 x, y로 ... 실수
+		temp[ny][nx] = !temp[ny][nx];
 	}
-	temp[x][y] = !temp[x][y];
+	temp[y][x] = !temp[y][x];
 }
 
 int main(){
 	ios_base::sync_with_stdio(0);
 	cin.tie(0), cout.tie(0);
-	int ans = 1e9;
+	int ans = -1;
 	for(int i=0; i<10; i++){
 		string s; cin >> s;
 		for(int j=0; j<10; j++){
@@ -39,7 +39,7 @@ int main(){
 		}
 	}
 	
-	for(int k=0; k<1024; k++){
+	for(int k=0; k<=1024; k++){
 		int cnt = 0;
 		init();
 		
@@ -53,10 +53,11 @@ int main(){
 			}
 		}
 		
-		if(!islight()) ans = min(ans, cnt);
+		if(!islight()){
+			if(ans == -1) ans = cnt;
+			else ans = min(ans, cnt);
+		}
 	}
-	
-	if(ans == 1e9) ans = -1;
 	cout << ans << '\n';
 	return 0;
 }
