@@ -12,11 +12,7 @@
 
 ### 채점결과
 
-정확성: 69.6<br/>효율성: 30.4<br/>합계: 100.0 / 100.0
-
-### 제출 일자
-
-2023년 11월 5일 13:31:21
+Empty
 
 ### 문제 설명
 
@@ -72,4 +68,4 @@ A에서 첫번째 숫자인 1,  B에서 두번째 숫자인 4를 뽑아 곱하�
 이 경우가 최소이므로 10을 return 합니다.</p>
 
 
-> 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
+> 출처: 프로그래머스 코딩 테스트 연습, https://programmers.co.kr/learn/challenges
