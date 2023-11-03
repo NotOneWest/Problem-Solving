@@ -7,7 +7,7 @@ int dy[3] = {-1, 0, -1};
 
 int solution(vector<vector<int>> board)
 {
-    int answer = board[0][0];
+    int answer = board[0][0]; // edge case 잘 생각할 것
     
     for(int i=1; i<board.size(); i++){
         for(int j=1; j<board[0].size(); j++){
