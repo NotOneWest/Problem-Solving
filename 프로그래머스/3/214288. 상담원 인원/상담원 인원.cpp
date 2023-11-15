@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<vector<int>> nums;
+set<vector<int>> nums;
 
 void dfs(int remain, int idx, vector<int> num){
     if(remain <= 0){
-        nums.push_back(num);
+        nums.insert(num);
         return;
     }
     
@@ -27,9 +27,7 @@ int solution(int k, int n, vector<vector<int>> reqs) {
         
         for(int i=0; i<k; i++){
             for(int j=0; j<num[i]; j++) pq[i].push(0);
-            cout << num[i] << " ";
         }
-        cout << "\n";
         
         for(auto req : reqs){
             int start = req[0], times = req[1], type = req[2];
