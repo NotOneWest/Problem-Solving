@@ -22,6 +22,8 @@ int getW(int now, int move){
 }
 
 int typing(int left, int right, int idx, const string& numbers){
+    // 시간 절약을 위하여 numbers를 pass by reference로 선언하여 복사하는 시간 절약
+    // Global 변수로 numbers를 따로 빼서 인자로 안주고 하는 방법도 O
     if(idx >= numbers.length()) return 0;
     
     if(left == right) return 9999999; // 왼손, 오른손 같으면 오류
