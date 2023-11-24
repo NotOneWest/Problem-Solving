@@ -10,6 +10,11 @@ int ccw(pair<long long, long long> a, pair<long long, long long> b, pair<long lo
 }
 
 void loc(vector<pair<long long, long long> > dot){
+	// <두 직선의 교점 구하는 방법>
+	// Px = (x1*y2 - y1*x2)*(x3-x4) - (x1-x2)*(x3*y4 - y3*x4)
+	// Py = (x1*y2 - y1*x2)*(y3-y4) - (y1-y2)*(x3*y4 - y3*x4)
+	// p = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4)
+	// x = Px/p, y = Py/p
 	long double px = (dot[0].second * dot[1].first - dot[0].first * dot[1].second) * (dot[2].second - dot[3].second) - (dot[0].second - dot[1].second) * (dot[2].second * dot[3].first - dot[2].first * dot[3].second);
 	long double py = (dot[0].second * dot[1].first - dot[0].first * dot[1].second) * (dot[2].first - dot[3].first) - (dot[0].first - dot[1].first) * (dot[2].second * dot[3].first - dot[2].first * dot[3].second);
 	long double p = (dot[0].second - dot[1].second) * (dot[2].first - dot[3].first) - (dot[0].first - dot[1].first) * (dot[2].second - dot[3].second);
