@@ -59,6 +59,7 @@ int main() {
 			int len = stoi(command.substr(12, (command.length() - 13)));
 			string var = command.substr(0, 4);
 			
+			// list를 새로 구성 -> Map에서 var 부분 초기화하고 재할당
 			m_addr.erase(var);
 
 			auto nxt = allocate.begin();
@@ -89,7 +90,7 @@ int main() {
 			}
 			else {
 				if (idx == m_addr.end()) cout << 0 << '\n';
-				else cout << idx->second->first << '\n';
+				else cout << idx->second->first << '\n'; // map의 두 번째 (list)의 첫 번째 값이 시작점
 			}
 		}
 	}
