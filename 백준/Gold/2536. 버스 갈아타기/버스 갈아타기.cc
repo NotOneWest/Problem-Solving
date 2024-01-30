@@ -1,11 +1,6 @@
 #include <iostream>
-
 #include <queue>
-
-#include <vector>
-
 #include <algorithm>
-
 using namespace std;
 
 struct Bus {
@@ -25,11 +20,11 @@ int main() {
 	}
 	int sx, sy, dx, dy; cin >> sx >> sy >> dx >> dy;
 
-	int ans = -1;
 	queue<pair<int, int>> q; // 버스 no, cnt
 
 	// 처음 위치에서 바로 탈 수 있는 버스 queue에 push
 	for (int i = 0; i < k; i++) {
+		// X와 Y 모두 범위에 속하면 OK
 		if (bus[i].xs <= sx && sx <= bus[i].xe && bus[i].ys <= sy && sy <= bus[i].ye) {
 			q.push({ i, 1 });
 			visited[bus[i].no] = 1;
@@ -41,14 +36,17 @@ int main() {
 		q.pop();
 
 		// 도착 위치에 내릴 수 있는 버스 탔는지 체크
+		// X와 Y 모두 범위에 속하면 OK
 		if (bus[no].xs <= dx && dx <= bus[no].xe && bus[no].ys <= dy && dy <= bus[no].ye) {
-			ans = cnt;
-			break;
+			cout << cnt;
+			return 0;
 		}
 
 		for (int j = 0; j < k; j++) {
 			if (visited[bus[j].no]) continue;
 
+			// 다음 버스의 X,Y 끝이 현재 버스의 시작보다 작거나
+			// 다음 버스의 X,Y 시작이 현재 버스의 끝보다 크면 범위 아웃
 			if (bus[no].xs > bus[j].xe) continue;
 			if (bus[j].xs > bus[no].xe) continue;
 			if (bus[no].ys > bus[j].ye) continue;
@@ -59,6 +57,5 @@ int main() {
 		}
 	}
 
-	cout << ans << '\n';
 	return 0;
 }
