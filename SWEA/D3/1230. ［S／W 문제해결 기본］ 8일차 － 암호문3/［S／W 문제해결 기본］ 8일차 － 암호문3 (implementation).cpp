@@ -1,16 +1,22 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+const int NODE_MAX = 5000;
 
 struct Node {
 	int data;
 	Node* prev;
 	Node* next;
+
+	// <node pool>
+	// Node(int data) : data(data), next(nullptr), prev(nullptr) {}
 };
 
 Node* head;
 Node* tail;
 int len;
+// <node pool>
+// vector<Node*> nodeArr;
 
 void init_list() {
 	// 메모리 할당
@@ -22,6 +28,12 @@ void init_list() {
 	tail->prev = head;
 	tail->next = nullptr;
 	len = 0;
+
+	// <node pool>
+	// head = new Node(NULL);
+	// tail = new Node(NULL);
+	// len = 0;
+	// nodeArr.resize(NODE_MAX, nullptr);
 }
 
 Node* create_node(int data) {
@@ -30,6 +42,10 @@ Node* create_node(int data) {
 	node->prev = nullptr;
 	node->next = nullptr;
 	return node;
+
+	// <node pool>
+	// nodeArr[len] = new Node(data);
+	// return nodeArr[len++];
 }
 
 void insert(int loc, vector<int> &datas) {
@@ -81,6 +97,7 @@ void remove(int loc, int cnt) {
 		for (int i = 0; i < cnt; i++) curr = curr->next;
 		head = curr;
 		head->prev = nullptr;
+		len -= cnt;
 		return;
 	}
 
@@ -93,6 +110,7 @@ void remove(int loc, int cnt) {
 	curr->next->prev = linker;
 
 	if(linker->next == nullptr || linker->next == tail) tail = linker;
+	len -= cnt;
 }
 
 int main() {
