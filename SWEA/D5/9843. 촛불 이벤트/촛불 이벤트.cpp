@@ -7,6 +7,7 @@ using namespace std;
 long long n;
 
 long long bs() {
+	// k*k + k < 2*n ... k < root(2*n)
 	long long start = 1, end = sqrt(2 * n);
 	while (start <= end) {
 		long long mid = (start + end) / 2;
