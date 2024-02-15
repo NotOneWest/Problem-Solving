@@ -2,44 +2,53 @@
 using namespace std;
 
 const int MAX = 100000;
+int h, tree_size;
 long long seg[MAX * 4];
 long long arr[MAX + 1];
 
-long long init(int node, int start, int end) {
-	if (start == end) return seg[node] = arr[start];
-	int mid = (start + end) / 2;
-	return seg[node] = (init(node * 2, start, mid) + init(node * 2 + 1, mid + 1, end));
-}
+void init(int n) {
+	h = 1;
+	while (h < n)  h <<= 1;
+	tree_size = h << 1;
 
-long long sum(int node, int start, int end, int l, int r) {
-	if (l > end || start > r) return 0;
-	if (l <= start && end <= r) return seg[node];
-	int mid = (start + end) / 2;
-	return sum(node * 2, start, mid, l, r) + sum(node * 2 + 1, mid + 1, end, l, r);
-}
-
-void update(int node, int start, int end, int idx, long long diff) {
-	if (idx > end || start > idx) return;
-	seg[node] += diff;
-	if (start != end) {
-		int mid = (start + end) / 2;
-		update(node * 2, start, mid, idx, diff);
-		update(node * 2 + 1, mid + 1, end, idx, diff);
+	for (int i = h; i < tree_size; i++) {
+		if ((i - h) >= n) seg[i] = 0;
+		seg[i] = arr[i - h];
 	}
+
+	for (int i = (h-1); i >= 1; i--) seg[i] = seg[i << 1] + seg[i << 1 | 1];
+}
+
+void update(int idx, long long diff) {
+	idx += h;
+	while (1) {
+		if (idx == 0) break;
+		seg[idx] += diff;
+		idx >>= 1;
+	}
+}
+
+long long query(int l, int r) {
+	long long res = 0;
+	for (l += h, r += h; l < r; l >>= 1, r >>= 1) {
+		if (l & 1) res += seg[l++];
+		if (r & 1) res += seg[--r];
+	}
+	return res;
 }
 
 int main() {
 	ios::sync_with_stdio(0); cin.tie(0);
 	int n, q; cin >> n >> q;
-	for (int i = 1; i <= n; i++) cin >> arr[i];
-	init(1, 1, n);
+	for (int i = 0; i < n; i++) cin >> arr[i];
+	init(n);
 
 	for (int i = 0; i < q; i++) {
 		int x, y, a, b; cin >> x >> y >> a >> b;
 		if (x > y) swap(x, y);
-		cout << sum(1, 1, n, x, y) << '\n';
-		update(1, 1, n, a, ((long long) b) - arr[a]);
-		arr[a] = b;
+		cout << query(x-1, y) << '\n';
+		update(a-1, ((long long) b) - arr[a-1]);
+		arr[a - 1] = b;
 	}
 	return 0;
 }
