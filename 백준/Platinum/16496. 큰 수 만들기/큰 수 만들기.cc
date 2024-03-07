@@ -11,8 +11,6 @@ bool comp(const ll& a, const ll& b) {
 	if (a == 0) return false;
 	if (b == 0) return true;
 
-	/*ll aa = a + b * pow(10, (int) (log10(a) + 1));
-	ll bb = b + a * pow(10, (int) (log10(b) + 1));*/
 	string aa = to_string(a) + to_string(b);
 	string bb = to_string(b) + to_string(a);
 
@@ -38,4 +36,3 @@ int main() {
 	if (!flag) cout << 0;
 	return 0;
 }
-
