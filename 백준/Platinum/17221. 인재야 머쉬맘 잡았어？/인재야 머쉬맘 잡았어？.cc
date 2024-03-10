@@ -5,10 +5,8 @@ using namespace std;
 int ans;
 int A, B, X, Y;
 
-int INF = (1 << 31) - 1;
-
 void hunt(int a, int b, int x, int turn) {
-	if (a > 2017558997) return;
+	if (a > 22875475) return;
 	// 몬스터 죽였으면 횟수 갱신
 	if (x <= 0) { ans = min(ans, turn); return; }
 
@@ -20,7 +18,7 @@ void hunt(int a, int b, int x, int turn) {
 		if (hp - (Y * (cnt - 1)) > 0) ans = min(ans, turn + cnt + buff);
 
 		// 상한선 넘거나, 버프 결과가 같으면 종료
-		if (atk == (atk + (atk / 5)) || atk > 557074612) break;
+		if (atk == (atk + (atk / 5)) || atk > 100000) break;
 
 		// 버프 진행
 		atk += (atk / 5); hp -= (3 * Y); buff++;
