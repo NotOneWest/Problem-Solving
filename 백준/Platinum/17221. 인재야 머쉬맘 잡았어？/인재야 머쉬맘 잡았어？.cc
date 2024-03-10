@@ -6,6 +6,8 @@ int ans;
 int A, B, X, Y;
 
 void hunt(int a, int b, int x, int turn) {
+	// 버프 결과 공격력이 100000 이상 되는 지점 -> 상한선
+	// 상한선 만큼 반격을 시도한 체력 초과 -> 상한선
 	if (a > 22875475) return;
 	// 몬스터 죽였으면 횟수 갱신
 	if (x <= 0) { ans = min(ans, turn); return; }
