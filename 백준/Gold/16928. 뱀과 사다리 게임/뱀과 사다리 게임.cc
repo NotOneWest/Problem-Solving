@@ -1,75 +1,45 @@
-#include <iostream>
-#include <queue>
+#include <bits/stdc++.h>
+#define pb push_back
+#define mp make_pair
+#define all(x) (x).begin(), (x).end()
+
 using namespace std;
 
-struct NODE {
-    int number;
-    int Time;
-    bool operator <(const NODE& n) const {
-        return Time > n.Time;
-    }
-};
+typedef long long ll;
+typedef pair<int, int> pii;
+const double PI = acos(-1);
 
-int n, m;
-int stick[101];
-int snake[101];
-bool visit[101];
-
-
-bool isRange(int number) {
-    if (1 <= number && number <= 100) {
-        return true;
-    }
-    return false;
-}
-
-
-int bfs() {
-    priority_queue<NODE> pq;
-    visit[1] = true;
-    pq.push({ 1,0 });
-    while (!pq.empty()) {
-        NODE current = pq.top();
-        if (current.number == 100) {
-            return current.Time;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+  int n,m; cin >> n >> m;
+  int next[101]={0,}, distance[101];
+  for(int i=0; i<n; i++){
+    int x,y; cin >> x >> y;
+    next[x]=y;
+  }
+  for(int i=0; i<m; i++){
+    int u,v; cin >> u >> v;
+    next[u]=v;
+  }
+  queue<int> q;
+  fill(distance, distance+101, -1);
+  q.push(1);
+  distance[1]=0;
+  while(!q.empty()){
+    int prev=q.front();
+    q.pop();
+    for(int i=1; i<=6; i++){
+      int next_loc=(prev+i);
+      if(next_loc<=100){
+        if(next[next_loc]!=0) next_loc=next[next_loc];
+        if(distance[next_loc]==-1){
+          distance[next_loc]=(distance[prev]+1);
+          q.push(next_loc);
         }
-        pq.pop();
-        int next;
-        for (int i = 1; i <= 6; i++) {
-            next = current.number + i;
-            if (isRange(next) && visit[next] == 0) {
-                if (stick[next] != 0) {
-                    visit[next] = true;
-                    visit[stick[next]] = true;
-                    pq.push({ stick[next], current.Time + 1 });
-                }
-                else if(snake[next] != 0) {
-                    visit[next] = true;
-                    visit[snake[next]] = true;
-                    pq.push({ snake[next], current.Time + 1 });
-                }
-                else {
-                    pq.push({ next, current.Time + 1 });
-                    visit[next] = true;
-                }
-
-            }
-        }
+      }
     }
-    return -1;
-}
-
-int main() {
-    cin >> n >> m;
-    for (int i = 0; i < n; i++) {
-        int a, b;
-        cin >> a >> b;
-        stick[a] = b;
-    }
-    for (int i = 0; i < m; i++) {
-        int a, b;
-        cin >> a >> b;
-        snake[a] = b;
-    }
-    cout << bfs();
+  }
+  cout << distance[100] << '\n';
+	return 0;
 }
