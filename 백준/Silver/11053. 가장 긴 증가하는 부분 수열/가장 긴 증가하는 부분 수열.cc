@@ -1,33 +1,28 @@
-#include <bits/stdc++.h>
-#define pb push_back
-#define mp make_pair
-#define all(x) (x).begin(), (x).end()
-
+#include <iostream>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-typedef long long ll;
-typedef pair<int, int> pii;
-const double PI = acos(-1);
-
-int dp[1001], num[1001]; 
-
-int main(){
-	int n; cin >> n;
-	for(int i=1; i<=n; i++) cin >> num[i];
-	
-	dp[1]=1;
-	for(int i=2; i<=n; i++){
-		dp[i]=1;
-		for(int j=1; j<i; j++){
-			if(num[i]>num[j]){
-				dp[i]=max(dp[j]+1,dp[i]);
+int arr[2000];
+int dp[2000];
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	int n;
+	cin >> n;
+	int max = 0;
+	for (int i = 0; i < n; i++) {
+		cin >> arr[i];
+	}
+	for (int i = 0; i < n; i++) {
+		dp[i] = 1;
+		for (int j = 0; j < i; j++) {
+			if (arr[i] > arr[j]) {
+				if (dp[j] + 1 > dp[i])	dp[i] = dp[j] + 1;
 			}
 		}
+		if (max < dp[i])	max = dp[i];
 	}
-	int maximum=0;
-	for(int i=1;i<=n;i++){
-		maximum=max(maximum,dp[i]);
-	}
-	cout << maximum;
-	return 0;
+	cout << max;
 }
