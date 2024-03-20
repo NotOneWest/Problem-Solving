@@ -1,59 +1,43 @@
-#include <bits/stdc++.h>
-#define pb push_back
-#define mp make_pair
-#define all(x) (x).begin(), (x).end()
-
+#include <iostream>
+#include <set>
 using namespace std;
 
-typedef long long ll;
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
-const double PI = acos(-1);
+multiset<int> ms;
 
-int main(){
-  ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-  int t; cin >> t;
-  for(int i=0; i<t; i++){
-    priority_queue<pll> maxheap;
-    priority_queue<pll> minheap;
-    bool visited[1000001]={false,};
-    int k; cin >> k;
-    for(int j=0; j<k; j++){
-      char c;
-      ll n; cin >> c >>n;
-      if(c=='I'){
-        maxheap.push(pll(n,j));
-        minheap.push(pll(-n,j));
-        visited[j]=true;
-      } else{
-        if(n==1){
-          while(!maxheap.empty() && !visited[maxheap.top().second]){
-            maxheap.pop();
-          }
-          if(!maxheap.empty()){
-            visited[maxheap.top().second]=false;
-            maxheap.pop();
-          }
-        }else{
-          while(!minheap.empty() && !visited[minheap.top().second]){
-            minheap.pop();
-          }
-          if(!minheap.empty()){
-            visited[minheap.top().second]=false;
-            minheap.pop();
-          }
-        }
-      }
-    }
-    while(!maxheap.empty() && !visited[maxheap.top().second]){
-      maxheap.pop();
-    }
-    while(!minheap.empty() && !visited[minheap.top().second]){
-      minheap.pop();
-    }
-    if(maxheap.empty() && minheap.empty()) cout << "EMPTY\n";
-    else cout << maxheap.top().first << ' ' << -minheap.top().first << '\n';
-  }
-	return 0;
+int main() {
+	int T;
+	cin >> T;
+	for (int test_case = 1; test_case <= T; test_case++) {
+		ms.clear();
+		int n;
+		cin >> n;
+		for (int i = 0; i < n; i++) {
+			char tmp;
+			cin >> tmp;
+			if (tmp == 'I') {
+				int num;
+				cin >> num;
+				ms.insert(num);
+			}
+			else {
+				int num;
+				cin >> num;
+				if (ms.empty()) {
+					continue;
+				}
+				if (num == -1) {
+					ms.erase(ms.begin());
+				}
+				else {
+					ms.erase(--ms.end());
+				}
+			}
+		}
+		if (ms.empty()) {
+			cout << "EMPTY\n";
+		}
+		else {
+			cout << *(--ms.end()) << " " << *ms.begin() << "\n";
+		}
+	}
 }
