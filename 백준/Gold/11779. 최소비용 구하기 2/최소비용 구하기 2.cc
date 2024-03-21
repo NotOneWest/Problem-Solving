@@ -1,56 +1,77 @@
-#include <bits/stdc++.h>
-#define pb push_back
-#define mp make_pair
-#define all(x) (x).begin(), (x).end()
-
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
 using namespace std;
+#define INF (1<<31)-1
 
-typedef long long ll;
-typedef pair<int, int> pii;
-const double PI = acos(-1);
+struct NODE {
+	int index;
+	int cost;
+	bool operator < (const NODE& n) const {
+		return cost > n.cost;
+	}
+};
 
-vector<pii> vertex[20001];
-int dis[20001], inf=999999999, visited[20001]={0,};
+struct DISTNODE {
+	int cost;
+	int prev;
+	int cnt;
+};
 
-void dijkstra(int start){
-  dis[start]=0;
-  priority_queue<pii> pq;
-  pq.push(mp(0, start));
-  while(!pq.empty()){
-    int cur=pq.top().second, curdis=-pq.top().first;
-    pq.pop();
-    if(dis[cur]<curdis) continue;
-    for(int i=0; i<vertex[cur].size(); i++){
-      int next=vertex[cur][i].second, nextdis=vertex[cur][i].first+curdis;
-      if(dis[next]>nextdis){
-        dis[next]=nextdis;
-        visited[next]=cur;
-        pq.push(mp(-nextdis, next));
-      }
-    }
-  }
+int n, m;
+int targetStart, targetEnd;
+DISTNODE dist[1001];
+vector<pair<int, int>> v[1001];
+priority_queue<NODE> pq;
+
+void Dijaksta() {
+	pq.push({ targetStart, 0 });
+	dist[targetStart].cost = 0;
+	while (!pq.empty()) {
+		NODE current = pq.top();
+		if (current.index == targetEnd) {
+			break;
+		}
+		pq.pop();
+		for (int i = 0; i < v[current.index].size(); i++) {
+			int nextIndex = v[current.index][i].first;
+			int nextCost = current.cost + v[current.index][i].second;
+			if (nextCost < dist[nextIndex].cost) {
+				pq.push({ nextIndex,nextCost });
+				dist[nextIndex].cost = nextCost;
+				dist[nextIndex].prev = current.index;
+				dist[nextIndex].cnt = dist[current.index].cnt + 1;
+			}
+		}
+	}
+	vector<int> temp;
+	int index = targetEnd;
+	while (dist[index].prev != index) {
+		temp.push_back(index);
+		index = dist[index].prev;
+	}
+	temp.push_back(index);
+	reverse(temp.begin(), temp.end());
+	cout << dist[targetEnd].cost << "\n";
+	cout << dist[targetEnd].cnt << "\n";
+	for (int i = 0; i < temp.size(); i++) {
+		cout << temp[i] << " ";
+	}
 }
 
-int main(){
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-  int n,m; cin >> n >> m;
-  for(int i=0; i<m; i++){
-    int u,v,w; cin >> u >> v >> w;
-    vertex[u].pb(mp(w,v));
-  }
-  int start, end; cin >> start >> end;
-  for(int i=0; i<=20001; i++) dis[i]=inf;
-  dijkstra(start);
-  cout << dis[end] << '\n';
-  vector<int> ans;
-  int t=end;
-  while(t!=0){
-    ans.pb(t);
-    t=visited[t];
-  }
-  cout << ans.size() << '\n';
-  for(int i=1; i<=ans.size(); i++) cout << ans[ans.size()-i] << ' ';
-  cout << '\n';
-	return 0;
+int main() {
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) {
+		dist[i].cost = INF;
+		dist[i].prev = i;
+		dist[i].cnt = 1;
+	}
+	for (int i = 0; i < m; i++) {
+		int start, end, cost;
+		cin >> start >> end >> cost;
+		v[start].push_back({ end,cost });
+	}
+	cin >> targetStart >> targetEnd;
+	Dijaksta();
 }
