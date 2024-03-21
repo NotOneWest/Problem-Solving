@@ -1,49 +1,74 @@
-#include <bits/stdc++.h>
-#define pb push_back
-#define mp make_pair
-#define all(x) (x).begin(), (x).end()
-
+#include <iostream>
 using namespace std;
 
-typedef long long ll;
-typedef pair<int, int> pii;
-const double PI = acos(-1);
+#define INF 100000000
 
-int INF=99999999;
+int N, M, W;
+int adj[501][501];
+bool flag;
 
-int main(){
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-  int tc; cin >> tc;
-  for(int c=0; c<tc; c++){
-    int n,m,w,check=0; cin >> n >> m >> w;
-    int dis[501];
-    vector<pii > node[501];
-    for(int i=1; i<=n; i++) node[i].clear();
-    for(int i=0; i<m; i++){
-      int s,e,t; cin >> s >> e >> t;
-      node[s].pb(mp(e,t));
-      node[e].pb(mp(s,t));
-    }
-    for(int i=0; i<w; i++){
-      int s,e,t; cin >> s >> e >> t;
-      node[s].pb(mp(e,-t));
-    }
-    for(int i=1; i<=n; i++) dis[i]=INF;
-    dis[1]=0;
-    for(int k=1; k<=n; k++){
-      for(int i=1; i<=n; i++){
-        for(int j=0; j<node[i].size(); j++){
-          int next=node[i][j].first, cost=node[i][j].second;
-          if(dis[next] > dis[i]+cost){
-            dis[next]=(dis[i]+cost);
-            if(k==n) check=1;
-          }
-        }
-      }
-    }
-    if(check==1) cout << "YES" << '\n';
-    else cout << "NO" << '\n';
-  }
-	return 0;
+void solve(int index) {
+
+}
+
+int main() {
+	int T;
+	cin >> T;
+	for (int test_case = 1; test_case <= T; test_case++) {
+		cin >> N >> M >> W;
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= N; j++) {
+				adj[i][j] = INF;
+				if (i == j) {
+					adj[i][j] = 0;
+				}
+			}
+		}
+		for (int i = 0; i < M; i++) {
+			int start, end, cost;
+			cin >> start >> end >> cost;
+			if (adj[start][end] == INF) {
+				adj[start][end] = cost;
+			}
+			else {
+				adj[start][end] = min(adj[start][end], cost);
+			}
+			if (adj[end][start] == INF) {
+				adj[end][start] = cost;
+			}
+			else {
+				adj[end][start] = min(adj[end][start], cost);
+			}
+		}
+		for (int i = 0; i < W; i++) {
+			int start, end, cost;
+			cin >> start >> end >> cost;
+			if (adj[start][end] == INF) {
+				adj[start][end] = -(cost);
+			}
+			else {
+				adj[start][end] = min(adj[start][end], -(cost));
+			}
+		}
+		for (int k = 1; k <= N; k++) {
+			for (int i = 1; i <= N; i++) {
+				for (int j = 1; j <= N; j++) {
+					adj[i][j] = min(adj[i][j], adj[i][k] + adj[k][j]);
+				}
+			}
+		}
+		bool flag = false;
+		for (int i = 1; i <= N; i++) {
+			if (adj[i][i] < 0) {
+				flag = true;
+				break;
+			}
+		}
+		if (flag) {
+			cout << "YES\n";
+		}
+		else {
+			cout << "NO\n";
+		}
+	}
 }
