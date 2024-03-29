@@ -35,7 +35,6 @@ void init() {
 		else seg[i] = { -INF, -INF, -INF, -INF };
 	}
 
-	Node comp = { -INF, -INF, -INF, -INF };
 	for (long long i = h - 1; i > 0; i--) {
 		if (seg[i * 2 + 1].lMAX == -INF) seg[i] = seg[i * 2];
 		else seg[i] = merge(seg[i * 2], seg[i * 2 + 1]);
@@ -75,18 +74,15 @@ int main() {
 	for (int i = 0; i < m; i++) {
 		long long x1, y1, x2, y2;
 		cin >> x1 >> y1 >> x2 >> y2;
-		// x1, y1, x2, y2 안겹침 -> y1 <= x2
-		// x1-1 ~ y1-1 중 오른쪽 포함 최대 + y1 ~ x2-1 총 합 + x2 ~ y2 중 왼쪽 포함 최대
-		if (y1 < x2) {
-			cout << query(x1 - 1, y1).rMAX + query(y1, x2 - 1).sum + query(x2 - 1, y2).lMAX << '\n';
-		}
+		// x1, y1, x2, y2 안겹침 -> y1 < x2
+		// x1 ~ y1 중 오른쪽 포함 최대 / (y1+1) ~ (x2-1) 총 합 / x2 ~ y2 중 왼쪽 포함 최대 -> 모두 더한 값이 최대
+		if (y1 < x2) cout << query(x1 - 1, y1).rMAX + query(y1, x2 - 1).sum + query(x2 - 1, y2).lMAX << '\n';
 		else {
 			// 겹침
-			// 왼쪽 ~ 가운데가 최대 : x1-1 ~ x2 중 오른 포함 최대 + x2 ~ y1-1 중 왼쪽 포함 최대
-			// 가운데가 최대 -> x2 ~ y1-1 중 MAX
-			// 가운데 ~ 오른쪽이 최대 : x2 ~ y1-1 중 오른 포함 최대 + y1 ~ y2 중 왼쪽 포함 최대
-			// x1-1 ~ x2-1 중 오른쪽 포함 최대 + x2 ~ y1-1 총 합 + y1 ~ y2 중 왼쪽 포함 최대
-
+			// 왼쪽 ~ 가운데가 최대 : x1~(x2-1) 중 오른 포함 최대 + x2 ~ y1 중 왼쪽 포함 최대
+			// 가운데가 최대 -> x2 ~ y1 중 MAX
+			// 가운데 ~ 오른쪽이 최대 : x2 ~ y1 중 오른 포함 최대 + (y1+1) ~ y2 중 왼쪽 포함 최대
+			// x1 ~ (x2-1) 중 오른쪽 포함 최대 + x2 ~ y1 총 합 + (y1+1) ~ y2 중 왼쪽 포함 최대
 			Node left = query(x1 - 1, x2 - 1), mid = query(x2 - 1, y1), right = query(y1, y2);
 			cout << max({ left.rMAX + mid.lMAX, mid.MAX, mid.rMAX + right.lMAX, left.rMAX + mid.sum + right.lMAX }) << "\n";
 		}
